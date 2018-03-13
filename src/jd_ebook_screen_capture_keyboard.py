@@ -35,6 +35,7 @@ class CommandParser(object):
             default="../screen")
         parser.add_argument(
             "--flip_num",
+            required=True,
             help="How many times to flip, "
                  "this parameter limit the screen capture times.")
         args = parser.parse_args()
