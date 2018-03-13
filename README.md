@@ -28,7 +28,7 @@
 
 # jd_ebook_screen_capture_keyboard.py
     
-    用来对京东电子书客户端进行截屏。
+    用来对京东电子书客户端进行截屏，这个版本使用键盘进行翻页，由于不需要寻找鼠标点击按钮位置，所以比鼠标版本的简单。
 
     用法：
         python jd_ebook_screen_capture_keyboard.py --dir "../screen" --page_num 100
