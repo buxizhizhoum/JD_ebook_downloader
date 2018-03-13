@@ -196,7 +196,3 @@ if __name__ == "__main__":
     directory = command_params["dir"]
     flip_num = int(command_params["flip_num"])
     capture_screen_and_save(directory, flip_num)
-
-
-
-
