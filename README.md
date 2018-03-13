@@ -6,7 +6,7 @@
 
     Python2.7
 
-    PIL             截屏
+    PIL             Python图像处理库
 
     pyautogui       模拟键盘和鼠标操作
 
