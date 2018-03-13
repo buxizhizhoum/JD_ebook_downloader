@@ -4,7 +4,6 @@
 make a copy of jd ebook by capture screen.
 """
 import argparse
-import datetime
 import os
 import sys
 import time
@@ -39,6 +38,7 @@ class CommandParser(object):
                  "this parameter limit the screen capture times.")
         args = parser.parse_args()
         value["dir"] = args.dir
+        value["flip_num"] = args.flip_num
         cls.existance_judge(value)
         cls.dir_chk(value)
 
@@ -133,24 +133,30 @@ def confirm_loop():
                                   buttons=["Yes", "No"])
 
 
-def capture_screen_and_save(page_num):
+def capture_screen_and_save(directory, flip_times):
     """
     capture the screen and save it.
-    :param page_num:
+    :param flip_times:
+    :param directory: directory to save image
     :return:
     """
     pag.alert(text="Please switch window to where the screen will be shot.",
               title="Alert",
               button='OK')
     confirm_loop()
-    for page in range(page_num):
+    for flip in range(flip_times):
         time.sleep(0.3)
 
-        file_name = "../screen/%s.jpeg" % page
+        image_name = "%s.jpeg" % str(flip)
+        file_name = os.path.join(directory, image_name)
         screen_img = pag.screenshot()
         screen_img.save(file_name)
 
         pag.press("right")
+
+    pag.alert(text="It is the end of the file.",
+              title="alert",
+              button="OK")
 
 
 def capture_screen_compare_and_save(page_num):
@@ -187,8 +193,9 @@ def capture_screen_compare_and_save(page_num):
 
 if __name__ == "__main__":
     command_params = CommandParser.parse_command()
+    directory = command_params["dir"]
     flip_num = int(command_params["flip_num"])
-    capture_screen_and_save(flip_num)
+    capture_screen_and_save(directory, flip_num)
 
 
 
