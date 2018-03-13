@@ -34,8 +34,9 @@ class CommandParser(object):
             help="The directory to store captured image.",
             default="../screen")
         parser.add_argument(
-            "--page_num",
-            help="How many pages to flip.")
+            "--flip_num",
+            help="How many times to flip, "
+                 "this parameter limit the screen capture times.")
         args = parser.parse_args()
         value["dir"] = args.dir
         cls.existance_judge(value)
@@ -50,9 +51,9 @@ class CommandParser(object):
         :param param_dict:
         :return:
         """
-        if "page_num" not in param_dict:
-            print "'page_num' is None! " \
-                  "page_num is needed!\n--help to get help info."
+        if "flip_num" not in param_dict:
+            print "'flip_num' is None! " \
+                  "flip_num is needed!\n--help to get help info."
             sys.exit(0)
 
     @classmethod
@@ -186,8 +187,8 @@ def capture_screen_compare_and_save(page_num):
 
 if __name__ == "__main__":
     command_params = CommandParser.parse_command()
-    page_num = int(command_params["page_num"])
-    capture_screen_and_save(page_num)
+    flip_num = int(command_params["flip_num"])
+    capture_screen_and_save(flip_num)
 
 
 
