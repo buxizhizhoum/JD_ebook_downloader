@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-make a copy of jd ebook by capture screen.
+make a copy of jd ebook by capture screen, this version flip pages with
+keyboard, and is easier than the version slip with mouse.
 """
 import argparse
 import os
