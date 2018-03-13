@@ -33,9 +33,9 @@
     用法：
         python jd_ebook_screen_capture_keyboard.py --dir "../screen" --page_num 100
     
-        dir         用于指定存储截屏所获图片的路径
-        page_num    用于指定需要多少次翻页操作
-                    每次翻页会截屏一次，由于电脑不一定在一个屏幕显示一页，所以这个次数和电子书的页数不一定相等。
+        --dir         用于指定存储截屏所获图片的路径
+        --page_num    用于指定需要多少次翻页操作
+                      每次翻页会截屏一次，由于电脑不一定在一个屏幕显示一页，所以这个次数和电子书的页数不一定相等。
 
 
 todo： find_button, capture_screen, select button by user, locate button.
