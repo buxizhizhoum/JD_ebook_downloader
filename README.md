@@ -1,6 +1,6 @@
-#用于截屏的脚本，实现对电子书的截屏备份。
+# 用于截屏的脚本，实现对电子书的截屏备份。
 
-#测试环境：
+# 测试环境：
 
     windows 10
 
@@ -12,7 +12,7 @@
 
     OpenCV          图像处理
 
-#安装：
+# 安装：
     Python：
         下载：官网下载对应的安装包，运行。
         https://www.python.org/downloads/release/python-2714/
@@ -26,7 +26,7 @@
     OpenCV：
         pip install opencv
 
-#jd_ebook_screen_capture_keyboard.py
+# jd_ebook_screen_capture_keyboard.py
     
     用来对京东电子书客户端进行截屏。
 
