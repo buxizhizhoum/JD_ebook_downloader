@@ -3,12 +3,68 @@
 """
 make a copy of jd ebook by capture screen.
 """
+import argparse
+import datetime
 import os
+import sys
 import time
 
 import cv2 as cv
 import numpy as np
 import pyautogui as pag
+
+
+class CommandParser(object):
+    """
+    parse command line parameters
+    """
+    def __init__(self):
+        pass
+
+    @classmethod
+    def parse_command(cls):
+        """
+        parse command line parameters.
+        :return:
+        """
+        value = {}
+        parser = argparse.ArgumentParser(description='args parse')
+        parser.add_argument(
+            "--dir",
+            help="The directory to store captured image.",
+            default="../screen")
+        parser.add_argument(
+            "--page_num",
+            help="How many pages to flip.")
+        args = parser.parse_args()
+        value["dir"] = args.dir
+        cls.existance_judge(value)
+        cls.dir_chk(value)
+
+        return value
+
+    @classmethod
+    def existance_judge(cls, param_dict):
+        """
+        check whether requirement parameters are provided.
+        :param param_dict:
+        :return:
+        """
+        if "page_num" not in param_dict:
+            print "'page_num' is None! " \
+                  "page_num is needed!\n--help to get help info."
+            sys.exit(0)
+
+    @classmethod
+    def dir_chk(cls, param_dict):
+        """
+        check whether dir from command line is exist, if not, create it.
+        :param param_dict: command line parameters.
+        :return:
+        """
+        directory = param_dict["dir"]
+        if not os.path.exists(param_dict["dir"]):
+            os.makedirs(directory)
 
 
 def image_diff(img_1, img_2):
@@ -97,6 +153,11 @@ def capture_screen_and_save(page_num):
 
 
 def capture_screen_compare_and_save(page_num):
+    """
+    not completed yet.
+    :param page_num:
+    :return:
+    """
     # todo: buffer page to judge whether it is same with last screen
     # locateCenterOnScreen
     # locate
@@ -124,7 +185,8 @@ def capture_screen_compare_and_save(page_num):
 
 
 if __name__ == "__main__":
-    page_num = 317
+    command_params = CommandParser.parse_command()
+    page_num = int(command_params["page_num"])
     capture_screen_and_save(page_num)
 
 
