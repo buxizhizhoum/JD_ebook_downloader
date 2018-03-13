@@ -11,6 +11,9 @@ threshold = 0.9
 
 
 class FindButton(object):
+    """
+    class used to find the center coordinate of specified button.
+    """
     def __init__(self, button_dir, screen_dir):
         self.button_dir = button_dir
         self.screen_dir = screen_dir
@@ -19,10 +22,20 @@ class FindButton(object):
 
     @classmethod
     def read_img(cls, img_dir):
+        """
+        read image
+        :param img_dir:
+        :return:
+        """
         img_rgb = cv.imread(img_dir)
         return img_rgb
 
     def pre_process(self, img_dir):
+        """
+        pre process, to convert image from rgb to gray.
+        :param img_dir:
+        :return:
+        """
         # button = cv.imread(self.button_dir, 0)
         # screen_rgb = cv.imread(self.screen_dir)
         # screen_grey = cv.cvtColor(screen_rgb, cv.COLOR_BGR2GRAY)
@@ -31,11 +44,20 @@ class FindButton(object):
         return img_grey
 
     def button_size(self):
+        """
+        calculate the size of button
+        :return:
+        """
         button_img = self.pre_process(self.button_dir)
         width, height = button_img.shape[:2][::-1]
         return width, height
 
     def button_loc(self):
+        """
+        find the location of button, if more than one button is founded,
+        choose the last one
+        :return:
+        """
         screen = self.pre_process(self.screen_dir)
         button = self.pre_process(self.button_dir)
         width, height = self.button_size()
@@ -56,6 +78,12 @@ class FindButton(object):
             return None
 
     def button_loc_all(self):
+        """
+        find all of the possible locations of a specified button.
+        :return:
+        """
+        # todo: if there are more than one button is founded, interactive with
+        # user to choose one.
         screen = self.pre_process(self.screen_dir)
         button = self.pre_process(self.button_dir)
         width, height = self.button_size()
@@ -76,6 +104,11 @@ class FindButton(object):
             return None
 
     def button_center(self):
+        """
+        calculate the center coordinate of button, which will be the point
+        where the mouse click.
+        :return:
+        """
         button_location = self.button_loc()
         if button_location is None:
             return None
@@ -90,6 +123,10 @@ class FindButton(object):
         return center_x, center_y
 
     def show_button_loc(self):
+        """
+        show the founded button.
+        :return:
+        """
         screen_rgb = self.read_img(self.screen_dir)
         button_location = self.button_loc()
         if button_location is None:
