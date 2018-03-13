@@ -1,6 +1,7 @@
 *.jpeg
 *.jpg
 *.png
+*.pyc
 !button.JPG
 !button.png
 !image/
