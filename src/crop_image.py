@@ -13,8 +13,8 @@ import numpy as np
 
 SMALL_CONTOUR_AREA = 10
 
-# filename_full = "../screen/0.jpeg"
-filename_full = "../screen/0_crop.jpeg"
+filename_full = "../screen/0.jpeg"
+# filename_full = "../screen/0_crop.jpeg"
 image = cv2.imread(filename_full)
 image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -28,6 +28,7 @@ thresh = cv2.adaptiveThreshold(
     adaptiveMethod=cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
     thresholdType=cv2.THRESH_BINARY,
     blockSize=11, C=2)
+# find contours
 img, contours, hierarchy = cv2.findContours(
     thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -36,10 +37,10 @@ img, contours, hierarchy = cv2.findContours(
 # cv2.imwrite("../screen/thresh.jpeg", thresh)
 
 # those lines are used to test whether the contours are properly found.
-# img_cnt = cv2.drawContours(image, contours, -3, (0, 255, 0), 5)
-# img_cnt = cv2.drawContours(image_gray, contours, -3, (0, 255, 0), 3)
+# img_cnt = cv2.drawContours(image, contours, -3, (0, 255, 0), 1)
 # cv2.imshow("contours_1", img_cnt)
 # cv2.waitKey(0)
+# cv2.imwrite("../screen/contours_1.jpeg", image)
 
 # remove contours whose areas are too small
 contours = [c for c in contours if cv2.contourArea(c) > 10]
@@ -49,13 +50,19 @@ max_index = np.argmax(areas)
 cnt = contours[max_index]
 area_max = areas[max_index]
 
+img_cnt = cv2.drawContours(image, cnt, -3, (0, 255, 0), 3)
+cv2.imshow("contours_2", img_cnt)
+cv2.waitKey(0)
+cv2.imwrite("../screen/contours_2.jpeg", image)
+
 # tmp = cv2.minMaxLoc(cnt)
 moment = cv2.moments(cnt)
 cx = int(moment["m10"]/moment["m00"])
 cy = int(moment["m01"]/moment["m00"])
 
 """
-the shape of the figure is something like below, what we want is the rec inside.
+the shape of the figure is something like below, the rectangle at the bottom
+is the scroll bar when print screen, what we want is the rec inside.
 
                 left_top   --------------  right_top           -----
                            |            |                        |
@@ -78,6 +85,8 @@ point_cnt = [cnt[index[0]] for index in hull]
 
 img_convex = cv2.drawContours(image, point_cnt, -3, (0, 0, 255), 5)
 point_cnt.sort(key=lambda x: x[0][1])
+# todo: how to process the situation that more than 3 points are on
+# todo: the top line?
 p_left_top, p_right_top = point_cnt[0], point_cnt[1]
 x_left_top, y_left_top = p_left_top[0][0], p_right_top[0][1]
 x_right_top, y_right_top = p_right_top[0][0], p_right_top[0][1]
