@@ -9,6 +9,7 @@ crop image. during developing
 import os
 import cv2
 import numpy as np
+from ROI_calculate import calculate_roi_2
 
 
 SMALL_CONTOUR_AREA = 10
@@ -53,15 +54,15 @@ max_index = np.argmax(areas)
 cnt = contours[max_index]
 area_max = areas[max_index]
 
-img_cnt = cv2.drawContours(image, cnt, -3, (0, 255, 0), 3)
-cv2.imshow("contours_2", img_cnt)
-cv2.waitKey(0)
-cv2.imwrite("../screen/contours_2.jpeg", image)
+# img_cnt = cv2.drawContours(image, cnt, -3, (0, 255, 0), 3)
+# cv2.imshow("contours_2", img_cnt)
+# cv2.waitKey(0)
+# cv2.imwrite("../screen/contours_2.jpeg", image)
 
 # tmp = cv2.minMaxLoc(cnt)
-moment = cv2.moments(cnt)
-cx = int(moment["m10"]/moment["m00"])
-cy = int(moment["m01"]/moment["m00"])
+# moment = cv2.moments(cnt)
+# cx = int(moment["m10"]/moment["m00"])
+# cy = int(moment["m01"]/moment["m00"])
 
 """
 the shape of the figure is something like below, the rectangle at the bottom
@@ -83,16 +84,16 @@ is the scroll bar when print screen, what we want is the rec inside.
 """
 
 # hull = cv2.convexHull(cnt, returnPoints=True)
-hull = cv2.convexHull(cnt, returnPoints=False)
-point_cnt = [cnt[index[0]] for index in hull]
-
-img_convex = cv2.drawContours(image, point_cnt, -3, (0, 0, 255), 5)
-point_cnt.sort(key=lambda x: x[0][1])
+# hull = cv2.convexHull(cnt, returnPoints=False)
+# point_cnt = [cnt[index[0]] for index in hull]
+#
+# img_convex = cv2.drawContours(image, point_cnt, -3, (0, 0, 255), 5)
+# point_cnt.sort(key=lambda x: x[0][1])
 # todo: how to process the situation that more than 3 points are on
 # todo: the top line?
-p_left_top, p_right_top = point_cnt[0], point_cnt[1]
-x_left_top, y_left_top = p_left_top[0][0], p_right_top[0][1]
-x_right_top, y_right_top = p_right_top[0][0], p_right_top[0][1]
+# p_left_top, p_right_top = point_cnt[0], point_cnt[1]
+# x_left_top, y_left_top = p_left_top[0][0], p_right_top[0][1]
+# x_right_top, y_right_top = p_right_top[0][0], p_right_top[0][1]
 
 # p_left_bottom, p_right_bottom = point_cnt[-1], point_cnt[-2]
 # img_convex = cv2.drawContours(image, hull, -3, (0, 0, 255), 5)
@@ -103,10 +104,10 @@ x_right_top, y_right_top = p_right_top[0][0], p_right_top[0][1]
 # remove the point where y is the max will remove the bottom line,
 # the problem is that there are more than 2 point at the bottom line
 
-x, y, w, h = cv2.boundingRect(cnt)  # what is useful is the h
-print x, y, w, h
-
-w_modified = x_right_top - x_left_top
+# x, y, w, h = cv2.boundingRect(cnt)  # what is useful is the h
+# print x, y, w, h
+#
+# w_modified = x_right_top - x_left_top
 
 # lines below is to check whether ORI is right or not when developing.
 # img_rec = cv2.rectangle(image, (x_left_top, y_left_top),
@@ -116,12 +117,14 @@ w_modified = x_right_top - x_left_top
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 
+x, y, w, h = calculate_roi_2(cnt)
+
 # crop until area is to an set value, proper?
 # remove the contour whose area is same with image, get the next contour?
 # judge if the area of contour is not less than a value, crop?
-# img_to_keep = image[y:y+h, x:x+w, :]  # why y first?
-img_to_keep = image[y_left_top:y_left_top+h,
-                    x_left_top:x_left_top+w_modified, :]  # why y first?
+img_to_keep = image[y:y+h, x:x+w, :]  # why y first?
+# img_to_keep = image[y_left_top:y_left_top+h,
+#                     x_left_top:x_left_top+w_modified, :]  # why y first?
 # img_to_keep = image_gray[0:1080, 0:1700]
 # cv2.imshow("crop", img_to_keep)
 # cv2.waitKey(0)
