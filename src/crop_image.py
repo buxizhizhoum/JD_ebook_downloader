@@ -12,6 +12,9 @@ import numpy as np
 
 
 SMALL_CONTOUR_AREA = 10
+# the minimum width of content,
+# range whose width is less than this value will be ignored
+MINIMUM_WIDTH = 100
 
 filename_full = "../screen/0.jpeg"
 # filename_full = "../screen/0_crop.jpeg"
@@ -70,8 +73,8 @@ is the scroll bar when print screen, what we want is the rec inside.
                            |            |                        |
                            |            |                        |  h
                            |            |                        |
-                  ---------|            |----------              |
-                  |        |            |         |              |
+                  ---------              ----------              |
+                  |                               |              |
                   ---------------------------------            -----
                   
                            |------w-----|
