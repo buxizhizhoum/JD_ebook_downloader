@@ -21,8 +21,10 @@ image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 
 # in order to find contours of a image properly, convert it to threshold
+
 # how to confirm the threshold?
 # ret, thresh = cv2.threshold(image_gray, 177, 255, 0)
+
 # adaptive threshold instead of hard code.
 thresh = cv2.adaptiveThreshold(
     src=image_gray, maxValue=255,
