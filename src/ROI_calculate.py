@@ -34,6 +34,7 @@ and DELTA_WIDTH_ERROR is used to tolerate this misalignment
 MINIMUM_WIDTH = 100
 DELTA_HEIGHT_ERROR = 10
 DELTA_WIDTH_ERROR = 10
+GROUP_TOLERANCE = 10
 
 
 def calculate_roi(contour, bounding_rec_width, bounding_rec_height):
@@ -171,7 +172,8 @@ def calculate_roi_2(contour):
     # calculation in the following processes.
 
     # group of points at the top of the contour
-    group_top = group_maker(sorted_array, base_point=p_top_0, according="y")
+    group_top = group_maker(sorted_array, base_point=p_top_0, according="y",
+                            tolerance=DELTA_HEIGHT_ERROR)
 
     # the top left point should be the point in the group_top
     # and with the smallest x coordinate
@@ -187,13 +189,15 @@ def calculate_roi_2(contour):
     p_right_top = x_max_top
 
     group_left = group_maker(sorted_array,
-                             base_point=p_left_top, according="x")
+                             base_point=p_left_top, according="x",
+                             tolerance=DELTA_WIDTH_ERROR)
 
     group_left.sort(key=lambda x: x[1])
     p_left_bottom = group_left[-1]
 
     group_right = group_maker(sorted_array,
-                              base_point=p_right_top, according="x")
+                              base_point=p_right_top, according="x",
+                              tolerance=DELTA_WIDTH_ERROR)
 
     group_right.sort(key=lambda x: x[1])
     p_right_bottom = group_right[-1]
@@ -215,7 +219,7 @@ def calculate_roi_2(contour):
     return x, y, w, h
 
 
-def group_maker(points, base_point, according):
+def group_maker(points, base_point, according, tolerance=GROUP_TOLERANCE):
     if according in ("x", "X", 0):
         according = 0
     elif according in ("y", "Y", 1):
@@ -227,7 +231,7 @@ def group_maker(points, base_point, according):
     for point in points:
         point = point[0]
         tmp_height = abs(point[according] - base_point[according])
-        if tmp_height < DELTA_HEIGHT_ERROR:
+        if tmp_height < tolerance:
             res.append(point)
 
     return res
