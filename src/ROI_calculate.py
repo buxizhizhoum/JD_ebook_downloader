@@ -37,6 +37,13 @@ DELTA_WIDTH_ERROR = 10
 
 
 def calculate_roi(contour, bounding_rec_width, bounding_rec_height):
+    """
+    find the ROI rec, this method works, but relay on the contour type.
+    :param contour:
+    :param bounding_rec_width: the width of bounding rec
+    :param bounding_rec_height: the height of bounding rec
+    :return:
+    """
     if len(contour) < 4:
         # contour should contain at least 4 point.
         raise ValueError("bad contour")
@@ -154,24 +161,17 @@ def calculate_roi_2(contour):
 
     sorted_array = sorted(contour, key=lambda x: x[0][1])
 
-    # group of points at the top of the contour
-    group_top = []
-
     # the points are sorted by coordinate y,
     # the first point is belong to group_top
     p_top_0 = sorted_array[0][0]
-    group_top.append(p_top_0)
 
-    # find points who belongs to group_top
-    for point in sorted_array:
-        point = point[0]
-        tmp_height = abs(point[1] - p_top_0[1])
-        if tmp_height < DELTA_HEIGHT_ERROR:
-            group_top.append(point)
-            # todo: if there are too many points to process, point processed
-            # should be removed from sorted_array, however, there are only
-            # several points, do not remove the point not cause heavy
-            # calculation in the following processes.
+    # todo: if there are too many points to process, point processed
+    # should be removed from sorted_array, however, there are only
+    # several points, do not remove the point not cause heavy
+    # calculation in the following processes.
+
+    # group of points at the top of the contour
+    group_top = group_maker(sorted_array, base_point=p_top_0, according="y")
 
     # the top left point should be the point in the group_top
     # and with the smallest x coordinate
@@ -186,24 +186,14 @@ def calculate_roi_2(contour):
 
     p_right_top = x_max_top
 
-    # group point to 2 group according to p_left_top and p_right_top, each
-    # group should have close y coordinate, some points may be ignored
-    group_left = []
-    for point in sorted_array:
-        point = point[0]
-        diff_x = abs(point[0] - p_left_top[0])
-        if diff_x < DELTA_WIDTH_ERROR:
-            group_left.append(point)
+    group_left = group_maker(sorted_array,
+                             base_point=p_left_top, according="x")
 
     group_left.sort(key=lambda x: x[1])
     p_left_bottom = group_left[-1]
 
-    group_right = []
-    for point in sorted_array:
-        point = point[0]
-        diff_x = abs(point[0] - p_right_top[0])
-        if diff_x < DELTA_WIDTH_ERROR:
-            group_right.append(point)
+    group_right = group_maker(sorted_array,
+                              base_point=p_right_top, according="x")
 
     group_right.sort(key=lambda x: x[1])
     p_right_bottom = group_right[-1]
