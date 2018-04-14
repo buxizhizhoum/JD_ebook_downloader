@@ -1,14 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-crop image. during developing
-为了一页能在一个屏幕显示，截图两侧有黑边，需要裁剪
+crop image.
+
+there are black side at the lateral of the photo, needs to crop.
 """
-# todo: 将所有的截图进行分类后，再进行裁剪，
-# 这样或许可以解决部分截图大小不一样的问题。
 import os
+
 import cv2
 import numpy as np
+
 from ROI_calculate import calculate_roi_2
 
 
