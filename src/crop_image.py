@@ -17,6 +17,11 @@ SMALL_CONTOUR_AREA = 10
 
 
 def crop_image(filename_full):
+    """
+    crop the black side of an image.
+    :param filename_full: the path of the image to crop
+    :return:
+    """
     image = cv2.imread(filename_full)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -55,11 +60,17 @@ def crop_image(filename_full):
     # judge if the area of contour is not less than a value, crop?
     img_to_keep = image[y:y + h, x:x + w, :]  # why y first?
 
+    # todo: does it is possible to save files in the original path?
     filename_full_crop = new_filename(filename_full)
     cv2.imwrite(filename_full_crop, img_to_keep)
 
 
 def new_filename(filename_full):
+    """
+    creat new filename.
+    :param filename_full:
+    :return:
+    """
     filename_path, filename = os.path.split(filename_full)
     filename_crop_pre, extension = os.path.splitext(filename)
     filename_crop = filename_crop_pre + "_crop" + extension
@@ -68,6 +79,11 @@ def new_filename(filename_full):
 
 
 def crop_images(filenames_list):
+    """
+    crop images whose path is in a list.
+    :param filenames_list: the list of images path
+    :return:
+    """
     for filename in filenames_list:
         crop_image(filename)
 
