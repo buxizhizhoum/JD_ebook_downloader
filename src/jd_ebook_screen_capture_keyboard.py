@@ -14,6 +14,9 @@ import numpy as np
 import pyautogui as pag
 
 
+from crop_image import crop_images
+
+
 class CommandParser(object):
     """
     parse command line parameters
@@ -198,3 +201,6 @@ if __name__ == "__main__":
     directory = command_params["dir"]
     flip_num = int(command_params["flip_num"])
     capture_screen_and_save(directory, flip_num)
+
+    # crop image
+    crop_images()
