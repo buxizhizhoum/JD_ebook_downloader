@@ -6,6 +6,7 @@ crop image.
 there are black side at the lateral of the photo, needs to crop.
 """
 import os
+import traceback
 
 import cv2
 import numpy as np
@@ -23,6 +24,9 @@ def crop_image(filename_full):
     :return:
     """
     image = cv2.imread(filename_full)
+    if image is None:
+        return
+
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # in order to find contours of a image properly, convert it to threshold
@@ -54,6 +58,7 @@ def crop_image(filename_full):
     cnt = contours[max_index]
 
     x, y, w, h = calculate_roi_2(cnt)
+    print(x, y, w, h)
 
     # crop until area is to an set value, proper?
     # remove the contour whose area is same with image, get the next contour?
@@ -85,9 +90,18 @@ def crop_images(filenames_list):
     :return:
     """
     for filename in filenames_list:
-        crop_image(filename)
+        print(filename)
+
+        try:
+            crop_image(filename)
+            # delete original file after crop.
+            os.remove(filename)
+        except Exception as e:
+            print e
+            print traceback.format_exc()
 
 
 if __name__ == "__main__":
-    filename_full = "../screen/0.jpeg"
+    # filename_full = "../screen/0.jpeg"
+    filename_full = "C:/Software/screen_capture/books/ThinkPython/215.jpeg"
     crop_image(filename_full)

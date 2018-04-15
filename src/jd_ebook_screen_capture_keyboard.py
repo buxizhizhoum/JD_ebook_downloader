@@ -199,8 +199,12 @@ def capture_screen_compare_and_save(page_num):
 if __name__ == "__main__":
     command_params = CommandParser.parse_command()
     directory = command_params["dir"]
-    flip_num = int(command_params["flip_num"])
-    capture_screen_and_save(directory, flip_num)
+    # flip_num = int(command_params["flip_num"])
+    # capture_screen_and_save(directory, flip_num)
 
     # crop image
-    crop_images()
+    filename_list = os.listdir(directory)
+    filename_full_list = [os.path.join(directory, filename)
+                          for filename in filename_list]
+    crop_images(filename_full_list)
+
