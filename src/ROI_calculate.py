@@ -192,7 +192,8 @@ def calculate_roi_2(contour):
                              base_point=p_left_top, according="x",
                              tolerance=DELTA_WIDTH_ERROR)
 
-    group_left.sort(key=lambda x: x[1])
+    # group_left.sort(key=lambda x: x[1])
+    # sort by y, if y same, sort by minus tolerance in horizon direction
     group_left.sort(key=lambda x: (x[1], -abs(p_left_top[0] - x[0])))
     p_left_bottom = group_left[-1]
 
@@ -210,6 +211,7 @@ def calculate_roi_2(contour):
     if abs(w1 - w2) < DELTA_WIDTH_ERROR:
         w = w1
     else:
+        # if the error is larger than tolerance, get max width
         w = max(w1, w2)
 
     h1 = abs(p_left_bottom[1] - p_left_top[1])
@@ -218,6 +220,7 @@ def calculate_roi_2(contour):
     if abs(h1 - h2) < DELTA_HEIGHT_ERROR:
         h = h1
     else:
+        # if the error is larger than tolerance, get max height
         h = max(h1, h2)
 
     return x, y, w, h
