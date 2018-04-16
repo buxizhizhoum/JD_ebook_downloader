@@ -103,5 +103,6 @@ def crop_images(filenames_list):
 
 if __name__ == "__main__":
     # filename_full = "../screen/0.jpeg"
-    filename_full = "C:/Software/screen_capture/books/ThinkPython/215.jpeg"
+    # filename_full = "C:/Software/screen_capture/books/ThinkPython/46.jpeg"
+    filename_full = "../books/ThinkPython/46.jpeg"
     crop_image(filename_full)

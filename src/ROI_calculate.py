@@ -193,6 +193,7 @@ def calculate_roi_2(contour):
                              tolerance=DELTA_WIDTH_ERROR)
 
     group_left.sort(key=lambda x: x[1])
+    group_left.sort(key=lambda x: (x[1], -abs(p_left_top[0] - x[0])))
     p_left_bottom = group_left[-1]
 
     group_right = group_maker(sorted_array,
@@ -206,15 +207,18 @@ def calculate_roi_2(contour):
     w1 = abs(p_right_top[0] - p_left_top[0])
     w2 = abs(p_right_bottom[0] - p_left_bottom[0])
     # ideally they should be equal to each other
-    assert abs(w1 - w2) < DELTA_WIDTH_ERROR
+    if abs(w1 - w2) < DELTA_WIDTH_ERROR:
+        w = w1
+    else:
+        w = max(w1, w2)
 
     h1 = abs(p_left_bottom[1] - p_left_top[1])
     h2 = abs(p_right_bottom[1] - p_right_top[1])
     # ideally they should be equal to each other
-    assert abs(h1 - h2) < DELTA_HEIGHT_ERROR
-
-    w = w1
-    h = h1
+    if abs(h1 - h2) < DELTA_HEIGHT_ERROR:
+        h = h1
+    else:
+        h = max(h1, h2)
 
     return x, y, w, h
 
